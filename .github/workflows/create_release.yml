@@ -1,0 +1,30 @@
+name: Create Release
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: |
+          #sudo apt-get update
+          #sudo apt-get install -y $(find . -name apt-requirements.txt | xargs cat)
+          echo "No dependencies to install"
+      - name: Build
+        run: |
+          bazel build :release
+      - name: Test
+        run: |
+          # bazel test //...
+          echo "No tests to run"
+      - name: Publish Release
+        run: |
+          bazel run :release -- ${{ inputs.release_tag }}
